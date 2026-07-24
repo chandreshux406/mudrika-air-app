@@ -155,7 +155,7 @@
   background: none;
   border: none;
   color: var(--color-text-secondary);
-  opacity: 0.5;
+  opacity: 0.62;
   font-family: inherit;
   font-size: 12px;
   font-weight: 500;
@@ -306,7 +306,7 @@
   margin: 2px 0 0;
   font-size: 11px;
   color: var(--color-text-secondary);
-  opacity: 0.7;
+  opacity: 0.85;
 }
 
 .pill {
@@ -478,7 +478,7 @@
 .stat__label {
   font-size: 10px;
   color: var(--color-text-secondary);
-  opacity: 0.65;
+  opacity: 0.78;
 }
 
 /* Sleep card */
@@ -556,7 +556,7 @@
   justify-content: space-between;
   font-size: 9px;
   color: var(--color-text-secondary);
-  opacity: 0.55;
+  opacity: 0.72;
 }
 
 .sleep-card__stats {
@@ -589,7 +589,7 @@
   justify-content: space-between;
   font-size: 9px;
   color: var(--color-text-secondary);
-  opacity: 0.5;
+  opacity: 0.75;
   padding: 0 2px;
 }
 
@@ -616,7 +616,7 @@
 .spo2-card__label {
   font-size: 10px;
   color: var(--color-text-secondary);
-  opacity: 0.7;
+  opacity: 0.82;
   margin-top: 4px;
 }
 
@@ -635,7 +635,7 @@
   padding: 2px 0 6px;
   font-size: 8px;
   color: var(--color-text-secondary);
-  opacity: 0.5;
+  opacity: 0.75;
 }
 
 /* Bottom nav */
@@ -666,7 +666,7 @@
   gap: 4px;
   padding-top: 6px;
   color: var(--color-text-secondary);
-  opacity: 0.45;
+  opacity: 0.58;
   font-size: 11px;
   cursor: pointer;
   transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
