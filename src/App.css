@@ -147,11 +147,27 @@
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  transition: color 0.2s ease, opacity 0.2s ease, transform 0.15s ease;
+}
+
+.date-strip__item:hover {
+  color: #fff;
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+.date-strip__item:active {
+  transform: scale(0.9);
 }
 
 .date-strip__item--selected {
   color: #fff;
   opacity: 1;
+}
+
+.date-strip__item--selected:hover {
+  opacity: 1;
+  transform: translateY(-2px);
 }
 
 
