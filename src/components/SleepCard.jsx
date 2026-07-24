@@ -2,10 +2,10 @@ import useCountUp from '../hooks/useCountUp';
 import CardEmptyState from './CardEmptyState';
 
 const SEGMENTS = [
-  { key: 'deep', label: 'Deep', minutes: 102, color: 'var(--color-indigo)' },
-  { key: 'light', label: 'Light', minutes: 210, color: 'var(--color-purple)' },
-  { key: 'rem', label: 'REM', minutes: 122, color: 'var(--color-cyan)' },
-  { key: 'awake', label: 'Awake', minutes: 31, color: 'var(--color-orange)' },
+  { key: 'deep', label: 'Deep', minutes: 102, color: 'var(--color-indigo)', textColor: '#9fb0ff' },
+  { key: 'light', label: 'Light', minutes: 210, color: 'var(--color-purple)', textColor: '#d3b6ff' },
+  { key: 'rem', label: 'REM', minutes: 122, color: 'var(--color-cyan)', textColor: 'var(--color-cyan)' },
+  { key: 'awake', label: 'Awake', minutes: 31, color: 'var(--color-orange)', textColor: '#ffbf69' },
 ];
 
 const TIME_MARKS = ['10PM', '12AM', '2AM', '4AM'];
@@ -92,7 +92,7 @@ export default function SleepCard({ data, revealDelay = 0, borderDelay = 0 }) {
               const seg = SEGMENTS.find((s) => s.key === key);
               return (
                 <div className="stat" key={seg.key}>
-                  <span className="stat__value" style={{ color: seg.color }}>
+                  <span className="stat__value" style={{ color: seg.textColor }}>
                     {formatSleepDuration(animatedMinutes[key])}
                   </span>
                   <span className="stat__label">{seg.label}</span>
