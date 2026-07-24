@@ -1,4 +1,5 @@
-import useCountUp from '../hooks/useCountUp';
+import useLiveNumber from '../hooks/useLiveNumber';
+import useLiveCounter from '../hooks/useLiveCounter';
 import CardEmptyState from './CardEmptyState';
 
 function formatPace(totalSeconds) {
@@ -16,10 +17,32 @@ function formatDuration(totalSeconds) {
 }
 
 export default function RunningActivityCard({ data, revealDelay = 0, borderDelay = 0 }) {
-  const distanceValue = useCountUp(data?.distanceKm ?? 0, { duration: 1100, delay: revealDelay });
-  const paceValue = useCountUp(data?.paceSeconds ?? 0, { duration: 1100, delay: revealDelay + 120 });
-  const durationValue = useCountUp(data?.durationSeconds ?? 0, { duration: 1100, delay: revealDelay + 240 });
-  const caloriesValue = useCountUp(data?.calories ?? 0, { duration: 1100, delay: revealDelay + 360 });
+  const distanceValue = useLiveCounter(data?.distanceKm ?? 0, {
+    incrementPerTick: 0.012,
+    intervalMs: 1800,
+    revealDuration: 1100,
+    revealDelay,
+  });
+  const paceValue = useLiveNumber(data?.paceSeconds ?? 0, {
+    min: (data?.paceSeconds ?? 0) - 15,
+    max: (data?.paceSeconds ?? 0) + 15,
+    step: 1.5,
+    driftIntervalMs: 2400,
+    revealDuration: 1100,
+    revealDelay: revealDelay + 120,
+  });
+  const durationValue = useLiveCounter(data?.durationSeconds ?? 0, {
+    incrementPerTick: 3.5,
+    intervalMs: 1800,
+    revealDuration: 1100,
+    revealDelay: revealDelay + 240,
+  });
+  const caloriesValue = useLiveCounter(data?.calories ?? 0, {
+    incrementPerTick: 0.7,
+    intervalMs: 1800,
+    revealDuration: 1100,
+    revealDelay: revealDelay + 360,
+  });
 
   return (
     <section className="card" style={{ animationDelay: `${revealDelay}ms` }}>

@@ -1,8 +1,23 @@
-import useCountUp from '../hooks/useCountUp';
+import useLiveNumber from '../hooks/useLiveNumber';
+import useLiveSeries from '../hooks/useLiveSeries';
 import CardEmptyState from './CardEmptyState';
 
+const X_POSITIONS = [0, 30, 60, 90, 120, 150, 180, 210, 248];
+const INITIAL_Y = [40, 38, 30, 32, 22, 24, 16, 14, 6];
+
 export default function BloodOxygenCard({ data, revealDelay = 0, borderDelay = 0 }) {
-  const animatedValue = useCountUp(data?.value ?? 0, { duration: 1000, delay: revealDelay });
+  const animatedValue = useLiveNumber(data?.value ?? 0, {
+    min: 94,
+    max: 99,
+    step: 0.4,
+    driftIntervalMs: 2500,
+    revealDelay,
+  });
+
+  const ySeries = useLiveSeries(INITIAL_Y, { min: 4, max: 44, step: 3, intervalMs: 1400 });
+  const linePoints = X_POSITIONS.map((x, i) => `${x},${ySeries[i].toFixed(1)}`).join(' ');
+  const lastY = ySeries[ySeries.length - 1];
+  const areaPath = `M${X_POSITIONS.map((x, i) => `${x},${ySeries[i].toFixed(1)}`).join(' L')} L248,61 L0,61 Z`;
 
   return (
     <section className="card" style={{ animationDelay: `${revealDelay}ms` }}>
@@ -21,7 +36,7 @@ export default function BloodOxygenCard({ data, revealDelay = 0, borderDelay = 0
       ) : (
         <div className="spo2-card__body">
           <div className="spo2-card__reading">
-            <span className="spo2-card__value">{Math.round(animatedValue)}%</span>
+            <span className="spo2-card__value">{animatedValue.toFixed(0)}%</span>
             <span className="spo2-card__label">Healthy</span>
           </div>
 
@@ -38,31 +53,16 @@ export default function BloodOxygenCard({ data, revealDelay = 0, borderDelay = 0
                   <stop offset="100%" stopColor="var(--color-cyan)" stopOpacity="0" />
                 </linearGradient>
               </defs>
-              <path
-                className="chart-fill-fade"
-                d="M0,40 L30,38 L60,30 L90,32 L120,22 L150,24 L180,16 L210,14 L248,6 L248,61 L0,61 Z"
-                fill="url(#spo2-fill)"
-                style={{ animationDelay: `${revealDelay + 900}ms` }}
-              />
+              <path d={areaPath} fill="url(#spo2-fill)" />
               <polyline
-                className="chart-line-draw"
-                pathLength="1"
-                points="0,40 30,38 60,30 90,32 120,22 150,24 180,16 210,14 248,6"
+                points={linePoints}
                 stroke="var(--color-cyan)"
                 strokeWidth="1.6"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 fill="none"
-                style={{ animationDelay: `${revealDelay}ms` }}
               />
-              <circle
-                cx="248"
-                cy="6"
-                r="3.5"
-                fill="var(--color-cyan)"
-                className="glow-dot glow-dot--cyan chart-dot-pop chart-dot-pop--end"
-                style={{ animationDelay: `${revealDelay + 950}ms` }}
-              />
+              <circle cx="248" cy={lastY} r="3.5" fill="var(--color-cyan)" className="glow-dot glow-dot--cyan" />
             </svg>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import useCountUp from '../hooks/useCountUp';
+import useLiveNumber from '../hooks/useLiveNumber';
 import CardEmptyState from './CardEmptyState';
 
 const SEGMENTS = [
@@ -22,13 +22,44 @@ export default function SleepCard({ data, revealDelay = 0, borderDelay = 0 }) {
   const radius = 24;
   const circumference = 2 * Math.PI * radius;
 
-  const animatedScore = useCountUp(data?.score ?? 0, { duration: 1200, delay: revealDelay });
+  const animatedScore = useLiveNumber(data?.score ?? 0, {
+    min: 60,
+    max: 96,
+    step: 1.5,
+    driftIntervalMs: 3000,
+    revealDuration: 1200,
+    revealDelay,
+  });
   const progress = (animatedScore / 100) * circumference;
 
-  const deepMinutes = useCountUp(SEGMENTS[0].minutes, { duration: 1000, delay: revealDelay });
-  const remMinutes = useCountUp(SEGMENTS[2].minutes, { duration: 1000, delay: revealDelay + 120 });
-  const lightMinutes = useCountUp(SEGMENTS[1].minutes, { duration: 1000, delay: revealDelay + 240 });
-  const awakeMinutes = useCountUp(SEGMENTS[3].minutes, { duration: 1000, delay: revealDelay + 360 });
+  const deepMinutes = useLiveNumber(SEGMENTS[0].minutes, {
+    min: 80,
+    max: 130,
+    step: 2,
+    driftIntervalMs: 3200,
+    revealDelay,
+  });
+  const remMinutes = useLiveNumber(SEGMENTS[2].minutes, {
+    min: 95,
+    max: 145,
+    step: 2,
+    driftIntervalMs: 3200,
+    revealDelay: revealDelay + 120,
+  });
+  const lightMinutes = useLiveNumber(SEGMENTS[1].minutes, {
+    min: 180,
+    max: 235,
+    step: 3,
+    driftIntervalMs: 3200,
+    revealDelay: revealDelay + 240,
+  });
+  const awakeMinutes = useLiveNumber(SEGMENTS[3].minutes, {
+    min: 15,
+    max: 45,
+    step: 1.5,
+    driftIntervalMs: 3200,
+    revealDelay: revealDelay + 360,
+  });
 
   const animatedMinutes = { deep: deepMinutes, rem: remMinutes, light: lightMinutes, awake: awakeMinutes };
 
@@ -73,7 +104,7 @@ export default function SleepCard({ data, revealDelay = 0, borderDelay = 0 }) {
                   <div
                     key={seg.key}
                     className="sleep-card__segment"
-                    style={{ flexGrow: seg.minutes, background: seg.color }}
+                    style={{ flexGrow: animatedMinutes[seg.key], background: seg.color }}
                   >
                     {seg.key !== 'awake' && <span className="sleep-card__segment-label">{seg.label}</span>}
                   </div>

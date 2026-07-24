@@ -1,10 +1,31 @@
-import useCountUp from '../hooks/useCountUp';
+import useLiveNumber from '../hooks/useLiveNumber';
 import CardEmptyState from './CardEmptyState';
 
 const HOUR_MARKS = ['1H', '2H', '3H', '4H', '5H', '6H'];
 
+const PERIOD = 72;
+const VISIBLE_WIDTH = 360;
+const REPEATS = 10;
+
+function buildEcgPoints() {
+  const points = [];
+  for (let i = 0; i < REPEATS; i += 1) {
+    const x0 = i * PERIOD;
+    points.push(`${x0},26`, `${x0 + 8},10`, `${x0 + 16},42`, `${x0 + 24},22`, `${x0 + 32},26`);
+  }
+  return points.join(' ');
+}
+
+const ECG_POINTS = buildEcgPoints();
+
 export default function HeartRateCard({ data, revealDelay = 0, borderDelay = 0 }) {
-  const animatedBpm = useCountUp(data?.bpm ?? 0, { duration: 900, delay: revealDelay });
+  const animatedBpm = useLiveNumber(data?.bpm ?? 0, {
+    min: 56,
+    max: 92,
+    step: 2,
+    driftIntervalMs: 2000,
+    revealDelay,
+  });
 
   return (
     <section className="card" style={{ animationDelay: `${revealDelay}ms` }}>
@@ -25,19 +46,21 @@ export default function HeartRateCard({ data, revealDelay = 0, borderDelay = 0 }
       ) : (
         <>
           <div className="heart-card__chart">
-            <svg width="100%" height="53" viewBox="0 0 337 53" fill="none" preserveAspectRatio="none">
+            <svg
+              className="heart-card__ecg-scroll"
+              width={VISIBLE_WIDTH * 2}
+              height="53"
+              viewBox={`0 0 ${VISIBLE_WIDTH * 2} 53`}
+              fill="none"
+              preserveAspectRatio="none"
+            >
               <polyline
-                className="chart-line-draw"
-                pathLength="1"
-                points="0,26 24,26 32,8 40,44 48,20 56,26 96,26 104,10 112,42 120,22 128,26
-                    168,26 176,6 184,46 192,18 200,26 240,26 248,12 256,40 264,24 272,26
-                    312,26 320,9 328,45 337,26"
+                points={`${ECG_POINTS} ${VISIBLE_WIDTH * 2},26`}
                 stroke="var(--color-red)"
                 strokeWidth="1.6"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 fill="none"
-                style={{ animationDelay: `${revealDelay}ms` }}
               />
             </svg>
           </div>
