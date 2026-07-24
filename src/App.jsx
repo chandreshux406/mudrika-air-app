@@ -39,7 +39,7 @@ function App() {
       <div className="phone__content">
         <PullHandle handlers={handlers}>
           <StatusBar />
-          <Header onRefresh={() => {}} onAdd={() => {}} />
+          <Header onRefresh={() => window.location.reload()} onAdd={() => {}} />
           <DateStrip days={STRIP_DAYS} selected={selectedDate} onSelect={handleSelectDate} />
         </PullHandle>
 
