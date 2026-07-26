@@ -85,7 +85,7 @@ const ITEMS = [
   { key: 'profile', label: 'Profile' },
 ];
 
-export default function BottomNav({ active, onSelect }) {
+export default function BottomNav({ active, onSelect, onOpenChat }) {
   const leftItems = ITEMS.slice(0, 2);
   const rightItems = ITEMS.slice(2);
 
@@ -95,7 +95,7 @@ export default function BottomNav({ active, onSelect }) {
         <NavItem key={item.key} item={item} active={active === item.key} onSelect={onSelect} />
       ))}
 
-      <button className="bottom-nav__fab" onClick={() => onSelect('home')} aria-label="Heart rate">
+      <button className="bottom-nav__fab" onClick={onOpenChat} aria-label="Open health assistant chat">
         <svg className="bottom-nav__fab-icon" width="42" height="42" viewBox="28 20 140 140" fill="none">
           <path
             d="M122 89.9994H115.696C113.942 89.9994 113.064 89.9994 112.287 90.3455C111.511 90.6914 110.923 91.344 109.749 92.6485L107.005 95.6983C106.041 96.7685 105.559 97.3037 104.949 97.2906C104.338 97.2776 103.88 96.7226 102.964 95.6128L93.5557 84.2085C92.7021 83.1737 92.2752 82.6564 91.696 82.6216C91.1167 82.5868 90.631 83.0493 89.6597 83.9745L85.6506 87.7928C84.5063 88.8824 83.9341 89.4274 83.2189 89.7136C82.5037 89.9994 81.7135 89.9994 80.1333 89.9994H74"

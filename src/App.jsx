@@ -10,6 +10,7 @@ import SleepCard from './components/SleepCard';
 import HeartRateCard from './components/HeartRateCard';
 import BloodOxygenCard from './components/BloodOxygenCard';
 import BottomNav from './components/BottomNav';
+import ChatPage from './components/ChatPage';
 import useDragSheet from './hooks/useDragSheet';
 import { getDayRecord } from './data/dailyActivity';
 import { getDateStripDays } from './utils/date';
@@ -23,6 +24,7 @@ const STRIP_DAYS = getDateStripDays();
 function App() {
   const [selectedDate, setSelectedDate] = useState('2026-06-06');
   const [activeNav, setActiveNav] = useState('home');
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const { sheetRef, backdropRef, isOpen: isCalendarOpen, close: closeCalendar, handlers } = useDragSheet();
 
   const dayRecord = getDayRecord(selectedDate);
@@ -80,7 +82,9 @@ function App() {
         onSelectDate={handleSelectDate}
       />
 
-      <BottomNav active={activeNav} onSelect={setActiveNav} />
+      <BottomNav active={activeNav} onSelect={setActiveNav} onOpenChat={() => setIsChatOpen(true)} />
+
+      {isChatOpen && <ChatPage dayRecord={dayRecord} onClose={() => setIsChatOpen(false)} />}
     </div>
   );
 }
